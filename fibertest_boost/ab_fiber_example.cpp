@@ -37,7 +37,10 @@ public:
         // fibers zijn nog niet gestart
 
 
-        printf("Main thread is about to return\n"); // de main functie returned en dan word de join opgeroepen op alle fibers
+        printf("End of RunExample\n"); // de main functie returned en dan word de join opgeroepen op alle fibers
+
+        // start de fibers
+        
         return 0;
 	}
 };

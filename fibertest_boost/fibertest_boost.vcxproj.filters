@@ -18,5 +18,8 @@
     <ClCompile Include="fibertest_boost.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ab_fiber_example.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
