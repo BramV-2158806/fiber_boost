@@ -131,6 +131,8 @@
   <ItemGroup>
     <ClCompile Include="ab_fiber_example.cpp" />
     <ClCompile Include="fibertest_boost.cpp" />
+    <ClCompile Include="Helpers.cpp" />
+    <ClCompile Include="MergeSortThreads.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

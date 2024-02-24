@@ -21,26 +21,29 @@ private:
 public: 
 	static int RunExample() {
         int i = 0;
-        boost::fibers::fiber([&]() {
+        boost::fibers::fiber fiberA([&]() {
             do {
                 print_a();
                 i++;
             } while (i < 20);
-            }).detach();
+            });
 
-        boost::fibers::fiber([&]() {
+        boost::fibers::fiber fiberB([&]() {
             do {
                 i++;
                 print_b();
             } while (i < 20);
-            }).detach();
+            });
         // fibers zijn nog niet gestart
 
+        fiberA.join();
+        fiberB.join();
 
-        printf("End of RunExample\n"); // de main functie returned en dan word de join opgeroepen op alle fibers
 
-        // start de fibers
-        
+        printf("End of RunExample\n"); // de main functie returned en dan word de join opgeroepen op alle      
         return 0;
 	}
 };
+
+// Lijkt erop dat je geen fibers gewoon kan aanmaken in een functie zonder ze detachen en ze dan niet de joinen.
+// Als je ze niet joint moet je detachend en andersom.
