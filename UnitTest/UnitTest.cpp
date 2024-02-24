@@ -30,6 +30,15 @@ namespace UnitTest
 			std::vector<int> expected = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
 			Assert::IsTrue(result == expected);
 		}
+			
+		TEST_METHOD(TestMergeSortThreadsReverse)
+		{
+			std::vector<int> arr = { 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
+			MergeSortThreads mergeSortThreads;
+			std::vector<int> result = mergeSortThreads.MergeSort(arr);
+			std::vector<int> expected = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
+			Assert::IsTrue(result == expected);
+		}
 
 		TEST_METHOD(TestMergeSortThreadsEmpty)
 		{
@@ -61,6 +70,15 @@ namespace UnitTest
 		TEST_METHOD(TestMergeSortFibers2)
 		{
 			std::vector<int> arr = { 12, 11, 13, 5, 6, 7, 1, 2, 3, 4, 8, 9, 10 };
+			MergeSortFibers mergeSortFibers;
+			std::vector<int> result = mergeSortFibers.MergeSort(arr);
+			std::vector<int> expected = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
+			Assert::IsTrue(result == expected);
+		}
+
+		TEST_METHOD(TestMergeSortFibersReverse)
+		{
+			std::vector<int> arr = { 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
 			MergeSortFibers mergeSortFibers;
 			std::vector<int> result = mergeSortFibers.MergeSort(arr);
 			std::vector<int> expected = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 };
