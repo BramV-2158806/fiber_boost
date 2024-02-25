@@ -1,6 +1,7 @@
 #include <vector>
 #include <iostream>
 #include <thread>
+#include <future>
 
 class MergeSortThreads
 {
@@ -14,12 +15,20 @@ public:
 		std::vector<int> left(arr.begin(), arr.begin() + middle);
 		std::vector<int> right(arr.begin() + middle, arr.end());
 
-		std::thread leftThread([this, left]() {
+		std::promise<std::vector<int>> leftPromise;
+		std::future<std::vector<int>> leftFuture = leftPromise.get_future();
+		std::promise<std::vector<int>> rightPromise;
+		std::future<std::vector<int>> rightFuture = rightPromise.get_future();
+
+
+		std::thread leftThread([this, &leftPromise, left]() {
 			std::vector<int> resultLeft =  MergeSort(left);
+			leftPromise.set_value(std::move(resultLeft));
 		});
 
-		std::thread rightThread([this, right]() {
+		std::thread rightThread([this, &rightPromise, right]() {
 			std::vector<int> resultRight = MergeSort(right);
+			rightPromise.set_value(std::move(resultRight));
 		});
 
 		IncreaseNumThreads(2);
@@ -28,7 +37,10 @@ public:
 		leftThread.join();
 		rightThread.join();
 
-		return Merge(left, right);
+		std::vector<int> resultLeft = leftFuture.get();
+		std::vector<int> resultRight = rightFuture.get();
+
+		return Merge(resultLeft, resultRight);
 
 	}
 
