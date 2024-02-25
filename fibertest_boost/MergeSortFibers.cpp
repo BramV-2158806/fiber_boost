@@ -1,4 +1,5 @@
 #include <vector>
+#include <future>
 #ifndef NOMINMAX
 #define NOMINMAX
 #endif
@@ -15,18 +16,28 @@ public:
 		std::vector<int> left(arr.begin(), arr.begin() + middle);
 		std::vector<int> right(arr.begin() + middle, arr.end());
 
-		boost::fibers::fiber leftFiber([this, left]() {
+		std::promise<std::vector<int>> leftPromise;
+		std::future<std::vector<int>> leftFuture = leftPromise.get_future();
+		std::promise<std::vector<int>> rightPromise;
+		std::future<std::vector<int>> rightFuture = rightPromise.get_future();
+
+		boost::fibers::fiber leftFiber([this, &leftPromise, left]() {
 			std::vector<int> resultLeft = MergeSort(left);
+			leftPromise.set_value(std::move(resultLeft));
 		});
 
-		boost::fibers::fiber rightFiber([this, right]() {
+		boost::fibers::fiber rightFiber([this, &rightPromise, right]() {
 			std::vector<int> resultRight = MergeSort(right);
+			rightPromise.set_value(std::move(resultRight));
 		});
 
 		leftFiber.join();
 		rightFiber.join();
 
-		return Merge(left, right);
+		std::vector<int> resultLeft = leftFuture.get();
+		std::vector<int> resultRight = rightFuture.get();
+
+		return Merge(resultLeft, resultRight);
 
 	}
 
